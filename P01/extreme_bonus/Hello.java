@@ -6,7 +6,7 @@ public class Hello {
 
     String user = System.getProperty("user.name");
     
-    System.out.println("hello, " + user);
+    System.out.println("hello, " + user + "!");
 
   }
 
