@@ -22,6 +22,6 @@ public class Line{
     public String toString(){ 
         // Format : color (x1, y1) - (x2,y2)
         // return color+" ("+x1+","+y1+") - ("+x2+","+y2+")";
-        return String.format("%9s%s (%.3f,%.3f)-(%.3f,%.3f)", color.name(), color.toString(), x1, y1, x2, y2);
+        return String.format("%9s %s (%.3f,%.3f)-(%.3f,%.3f)", color.name(), color.toString(), x1, y1, x2, y2);
     }
 }
