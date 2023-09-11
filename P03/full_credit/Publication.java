@@ -30,8 +30,8 @@ public class Publication {
     }
 
     // public void checkIn() {
-    //     loanedTo = null;
-    //     dueDate = null;
+    //    
+	//
     // }
 
     @Override
