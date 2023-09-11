@@ -22,7 +22,6 @@
 // Library - the index number followed by the publication. This is so a user can enter an index number to
 // check out a publication. So something like this. (Do NOT literally print this text - print what is in the class
 // fields!
-
 import java.util.*;
 
 public class Library
@@ -38,6 +37,9 @@ public class Library
         this.name = name;
     }
 
+    //
+
+    //
     //Methods
     public void addPublication(Publication publication)
     {
@@ -54,23 +56,23 @@ public class Library
 
         catch(IndexOutOfBoundsException e)
         {
-            System.out.println("Index out of bounds");
+            System.out.println("\nIndex out of bounds\nPlease enter number in range");
             System.exit(-1);
         }
         return publicationindex;
     }
 
     @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(String.format("%s Public Library%n%n", name));
-    
+    public String toString() { //The Kathmandu Learning Lounge
+        String result = String.format("The %s Library Lounge (Bagmati)\n\n", name);
+
         for (int i = 0; i < publications.size(); i++) {
             Publication publication = publications.get(i);
-            stringBuilder.append(String.format("%d) %s%n", i, publication.toString()));
+            // Use the toString function from the Publication class // SMART !
+            String publicationInfo = String.format("%d) %s\n", i, publication.toString());
+            result += publicationInfo;
         }
-    
-        return stringBuilder.toString();
+        //System.out.println("\n\n");
+        return result;
     }
-    
 }

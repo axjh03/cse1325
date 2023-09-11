@@ -67,10 +67,10 @@ public class Publication {
 
     @Override
     public String toString() {
-        String str = String.format("'%s' by %s, copyright %d", title, author, copyright);
+        String str = String.format("\"%s\" by %s, copyright %d", title, author, copyright);
 
         if (loanedTo != null) {
-            str += String.format("\n\t==> Checked out to %s, due %d/%d/%d", loanedTo, thisMonth, thisDay, dueDate.getYear());
+            str += String.format(": loaned to %s until %d-%d-%d", loanedTo, dueDate.getYear(), dueDate.getMonthValue(), dueDate.getDayOfMonth());
         }
 
         return str;
