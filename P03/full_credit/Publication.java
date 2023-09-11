@@ -20,7 +20,7 @@ public class Publication {
 
         // Check for invalid year
         if (copyright < 1900 || thisYear < copyright) {
-            throw new IllegalArgumentException("Invalid year. Year must be later than 1900");
+            throw new IllegalArgumentException("Invalid year. Year must be later than 1900 and earlier than current year.");
         }
     }
 
