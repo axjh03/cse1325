@@ -57,27 +57,20 @@ public class Library
             System.out.println("Index out of bounds");
             System.exit(-1);
         }
-
-        // if(publicationindex < 0 || publicationindex > publications.size())
-        // {
-        //     throw new IndexOutOfBoundsException("Index out of bounds");
-        //     System.exit(-1);
-        // }
-        // else
-        // {
-        //     Publication[publicationindex] = patron; 
-        // }
         return publicationindex;
     }
 
     @Override
-    public String toString()
-    {
-        System.out.printf("%s Public Library\n\n", name);
-
-        for(int i = 0; i < publications.size(); i++)
-        {
-            System.out.printf("%d) \"%s\" by %s, copyright %d%n", i, title, author, year);
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(String.format("%s Public Library%n%n", name));
+    
+        for (int i = 0; i < publications.size(); i++) {
+            Publication publication = publications.get(i);
+            stringBuilder.append(String.format("%d) %s%n", i, publication.toString()));
         }
+    
+        return stringBuilder.toString();
     }
+    
 }

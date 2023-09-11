@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class LibraryManager{
     public static void main(String[] args)
     {   
@@ -9,9 +10,24 @@ public class LibraryManager{
 
         //Print the Library to the console, and ask the user which book to check out (an int representing publicationIndex).
 
+        // Print table
         System.out.println(library.toString());
 
+        //Asking for book index
         System.out.printf("\nWhich book would you like to check out? (Enter a number 0-2) ");
+        Scanner input = new Scanner(System.in);
+        int choice = input.nextInt();
+
+        //Asking for patron ID
+        System.out.printf("What is your patron ID? ");
+        Scanner input2 = new Scanner(System.in);
+        String ID = input2.nextLine();
+
+        //Checkout publication
+        library.checkOutPublication(choice, ID);
+
+        // Print table
+        System.out.println(library.toString());
 
     }
 }
