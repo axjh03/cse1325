@@ -14,7 +14,7 @@ public class LibraryManager{
         //Adding Patrons
         library.addPatron(new Patron("Ryan Davis", "davis@yahoo.com"));
         library.addPatron(new Patron("Priyanka Karki", "priyanka@gmail.com"));
-        library.addPatron(new Patron("Emily Davis", "emily@outlook.com"));
+        library.addPatron(new Patron("Emily Davis", "emily.davis@outlook.com"));
         library.addPatron(new Patron("John Smith", "john@uidaho.com"));
 
 
