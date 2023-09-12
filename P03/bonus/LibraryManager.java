@@ -12,10 +12,10 @@ public class LibraryManager{
         library.addPublication(new Publication("2001: A Space Odyssey", "Dick Hill", 1968));
 
         //Adding Patrons
-        library.addPatron(new Patron("John Doe", "jdoe@email.com"));
-        library.addPatron(new Patron("Priyanka Karki", "priyanka@email.com"));
-        library.addPatron(new Patron("Emily Davis", "emily@email.com"));
-        library.addPatron(new Patron("John Smith", "john@email.com"));
+        library.addPatron(new Patron("Ryan Davis", "davis@yahoo.com"));
+        library.addPatron(new Patron("Priyanka Karki", "priyanka@gmail.com"));
+        library.addPatron(new Patron("Emily Davis", "emily@outlook.com"));
+        library.addPatron(new Patron("John Smith", "john@uidaho.com"));
 
 
         // Print table
