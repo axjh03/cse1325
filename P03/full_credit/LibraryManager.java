@@ -36,7 +36,7 @@ public class LibraryManager{
         String ID = input2.nextLine();
 
         //Checkout publication
-        library.checkOutPublication(choice, ID);
+        library.checkOut(choice, ID);
 
         //printLines
         System.out.println("\n");

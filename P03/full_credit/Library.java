@@ -20,7 +20,7 @@ public class Library
         this.publications.add(publication);
     }
 
-    public int checkOutPublication(int publicationindex, String patron)
+    public int checkOut(int publicationindex, String patron)
     {
         try
         {
