@@ -1,11 +1,3 @@
-#!/bin/bash
-
-# Change to the extreme_bonus directory
-cd /path/to/extreme_bonus
-
-# Run the Java program
-java mdi.LibraryManager
-
 # Change to the library directory
 cd library
 
