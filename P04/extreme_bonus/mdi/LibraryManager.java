@@ -1,5 +1,9 @@
 package mdi;
 
+import library.Publication;
+import library.Patron;
+import library.Library;
+
 import java.util.Calendar;
 import java.util.Scanner;
 import java.io.File;
