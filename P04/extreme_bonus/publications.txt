@@ -1,0 +1,5 @@
+Hands-On Machine Learning with Scikit-Learn,Aurélien Géron,2023
+The Way of the Superior Man,David Deida,2017
+2001: A Space Odyssey,Dick Hill,1968
+The Cyborg Revolution, James Mercer, 2003
+$100M Offers, Alex Hormonzi, 2020
