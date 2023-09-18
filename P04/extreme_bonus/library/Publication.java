@@ -3,43 +3,44 @@ package library;
 import java.time.LocalDate;
 
 public class Publication {
-    // Attributes
-    private String title, author;
-    private Patron loanedTo;
+    private String title;
+    private String author;
     private int copyright;
+    private Patron loanedTo;
     private LocalDate dueDate;
 
-    // LocalDate instance
-    LocalDate currentDate = LocalDate.now(); // Creates a LocalDate instance with the current date
-    int thisYear = currentDate.getYear(); // Gets the year from the LocalDate instance
-    int thisMonth = currentDate.getMonthValue(); // Gets the month from the LocalDate instance
-    int thisDay = currentDate.getDayOfMonth(); // Gets the day from the LocalDate instance
-
-    // Constructors
     public Publication(String title, String author, int copyright) {
         this.title = title;
         this.author = author;
         this.copyright = copyright;
 
-        //Check for invalid year
-        if (copyright < 1900 || thisYear < copyright) {
-            throw new IllegalArgumentException("\n\nInvalid year. Year must be later than 1900 and earlier than current year.\n");
+        if (copyright < 1900) {
+            throw new IllegalArgumentException("Copyright must be 1900 or later");
         }
     }
 
     public void checkOut(Patron patron) {
         loanedTo = patron;
-        this.dueDate = currentDate.plusDays(14);
+        dueDate = LocalDate.now().plusDays(14);
+    }
+
+    public void checkIn() {
+        loanedTo = null;
+        dueDate = null;
+    }
+
+    protected String toStringBuilder(String pre, String mid) {
+        String str = pre + " \"" + title + "\" by " + author + " (©" + copyright + ")" + mid;
+
+        if (loanedTo != null) {
+            str += "\nLoaned to: " + loanedTo + " Due: " + dueDate;
+        }
+
+        return str;
     }
 
     @Override
     public String toString() {
-        String str = String.format("\"%s\" by %s (\u00A9 %d)", title, author, copyright);
-
-        if (loanedTo != null) {
-            str += String.format("\n\tLoaned to: %s \n\tDue: %d-%02d-%02d\n", loanedTo, dueDate.getYear(), dueDate.getMonthValue(), dueDate.getDayOfMonth());
-        }
-
-        return str;
+        return toStringBuilder("Book", "");
     }
 }
