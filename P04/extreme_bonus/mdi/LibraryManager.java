@@ -6,6 +6,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+
+/**
+ * Represents the Library Manager. 
+ */
+
 public class LibraryManager {
     public static void main(String[] args) {
         Library library = new Library("The Kathmandu Library Lounge (Bagmati)");
@@ -24,7 +29,7 @@ public class LibraryManager {
         int bookChoice = 0, patronChoice = 0;
 
         try {
-            System.out.print("Which book to check out? ");
+            System.out.print("Which publication to check out? ");
             bookChoice = input.nextInt();
         } catch (java.util.InputMismatchException e) {
             System.err.println("Invalid input. Please enter an integer.");
