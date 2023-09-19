@@ -6,6 +6,7 @@ import java.util.*;
  * @author Alok Jha
  * @version 1.0
  * @since 1.0
+ * @license.agreement Gnu General Public License version 3
 */
 public class Library {
 
