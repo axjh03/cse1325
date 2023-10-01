@@ -7,7 +7,7 @@ import java.util.*;
  * @version 1.0
  * @since 1.0
  * @license.agreement Gnu General Public License version 3
-*/
+ */
 public class Library {
 
   /**
@@ -51,6 +51,24 @@ public class Library {
   public void addPatron(Patron patron) {
     this.patrons.add(patron);
   }
+  
+  /**
+   * Gets the list of publications in the library.
+   *
+   * @return The list of publications
+   */
+  public ArrayList<Publication> getPublications() {
+    return publications;
+  }
+
+  /**
+   * Gets the list of patrons registered with the library.
+   *
+   * @return The list of patrons
+   */
+  public ArrayList<Patron> getPatrons() {
+    return patrons;
+  }
 
   /**
    * Generates a formatted string of all the patrons.
@@ -85,13 +103,27 @@ public class Library {
   }
 
   /**
+   * Checks in a publication.
+   * 
+   * @param publicationIndex The index of the publication to check in
+   * @return The index of the checked in publication
+   */
+  public int checkIn(int publicationIndex) {
+    if (publicationIndex >= 0 && publicationIndex < publications.size()) {
+      Publication publication = publications.get(publicationIndex);
+      publication.checkIn();
+    }
+    return publicationIndex;
+  }
+
+  /**
    * Generates a formatted string of all publications in the library.
    * 
    * @return A string containing the list of publications
    */
   @Override
   public String toString() {
-    String result = String.format("%s\n\n", name);
+    String result = String.format("%s", name);
 
     for (int i = 0; i < publications.size(); i++) {
       Publication publication = publications.get(i);

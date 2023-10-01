@@ -8,17 +8,18 @@
 // +addPatron()
 // +loadData()
 // +main(args: String[])
+
 package mdi;
 
 import library.Library;
 import library.Patron;
 import library.Publication;
 import library.Video;
-
-import java.io.File;
-import java.io.FileNotFoundException;
+import library.Video.InvalidRuntimeException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class LibraryManager {
     private Library library;
@@ -141,9 +142,9 @@ public class LibraryManager {
         library.addPatron(new Patron(name, email));
     }
 
-    public void loadData(String libraryFile, String patronsFile) {
-        loadPublicationsFromFile(libraryFile);
-        loadPatronsFromFile(patronsFile);
+    public void loadData() {
+        loadPublicationsFromFile("publications.txt");
+        loadPatronsFromFile("patrons.txt");
     }
 
     private void loadPublicationsFromFile(String fileName) {
@@ -196,11 +197,8 @@ public class LibraryManager {
         Scanner input = new Scanner(System.in);
 
         while (true) {
-            System.out.println("##########################################");
-            System.out.printf("# %s #\n",library.toString());
-            System.out.println("##########################################");
-            // System.out.println(Library);
-            System.out.println("\nPublications");
+            System.out.println("The Kathmandu Library");
+            System.out.println("Publications");
             System.out.println("1.) List");
             System.out.println("2.) Add");
             System.out.println("3.) Check out");
@@ -236,11 +234,11 @@ public class LibraryManager {
                     manager.addPatron();
                     break;
                 case 7:
-                    System.out.print("Enter Library File: ");
-                    String libraryFile = input.nextLine();
-                    System.out.print("Enter Patrons File: ");
+                    System.out.print("Enter Library Files: ");
+                    String libraryFiles = input.nextLine();
+                    System.out.print("Enter patrons file: ");
                     String patronsFile = input.nextLine();
-                    manager.loadData(libraryFile, patronsFile);
+                    manager.loadLibraryFiles(libraryFiles, patronsFile);
                     break;
                 case 0:
                     System.out.println("Exiting Library Manager.");
