@@ -1,79 +1,103 @@
-// Copyright 2023 Alok Jha <https://github.com/axjh03/cse1325.git>
-// Copyright 2023 George F. Rice <https://github.com/prof-rice>
-//
-// This file is part of the Library Management System and is licensed
-// under the terms of the Gnu General Public License version 3 or 
-// (at your option) any later version, see <https://www.gnu.org/licenses/>.
-
 package mdi;
 
-import library.Library;
-import library.Patron;
-import library.Publication;
-import library.Video;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import library.*;
 
-class LibraryManager {
-    public static void main(String[] args) 
-    {
-        try (BufferedReader br = new BufferedReader(new FileReader((args[0])))) 
-        {
-            String name;
-            Library library = new Library(br.readLine());
-            while ((name = br.readLine()) != null) 
-            {
-                if (name.isEmpty())
-                {
-                    break;
-                }
-                if (name.equals("Publication")) 
-                {
-                    library.addPublication(new Publication(br.readLine(), br.readLine(),
-                            Integer.parseInt(br.readLine())));
-                } 
-                else if (name.equals("Video")) 
-                {
-                    library.addPublication(new Video(br.readLine(), br.readLine(),
-                            Integer.parseInt(br.readLine()),
-                            Integer.parseInt(br.readLine())));
-                } 
-                else 
-                {
-                    throw new IOException("Unable to load " + args[0]);
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+
+/**
+ * Represents the Library Manager. 
+ */
+
+public class LibraryManager {
+    public static void main(String[] args) {
+        Library library = new Library("The Kathmandu Library Lounge (Bagmati)");
+
+        // Load publications from the publications.txt file
+        loadPublicationsFromFile(library, "publications.txt");
+
+        // Load patrons from the patrons.txt file
+        loadPatronsFromFile(library, "patrons.txt");
+
+        // Print table
+        System.out.println(library.toString());
+
+        // Input for Selecting Book
+        Scanner input = new Scanner(System.in);
+        int bookChoice = 0, patronChoice = 0;
+
+        try {
+            System.out.print("Which publication to check out? ");
+            bookChoice = input.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.err.println("Invalid input. Please enter an integer.");
+            System.exit(1); // Exit the program with an error code
+        }
+
+        System.out.println(library.patronMenu());
+
+        try {
+            System.out.print("Who are you? ");
+            patronChoice = input.nextInt();
+        } catch (java.util.InputMismatchException e) {
+            System.err.println("Invalid input. Please enter an integer.");
+            System.exit(1); // Exit the program with an error code
+        }
+
+        // Checkout publication
+        library.checkOut(bookChoice, patronChoice);
+
+        // Print updated table
+        System.out.println(library.toString());
+    }
+
+    // Load publications from a text file
+    public static void loadPublicationsFromFile(Library library, String fileName) {
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+
+                if (parts.length >= 4) {
+                    String type = parts[0];
+                    String title = parts[1];
+                    String author = parts[2];
+                    int copyright = Integer.parseInt(parts[3].trim());
+
+                    if (type.equals("Book")) {
+                        library.addPublication(new Publication(title, author, copyright));
+                    } else if (type.equals("Video")) {
+                        int runtime = Integer.parseInt(parts[4].trim());
+                        library.addPublication(new Video(title, author, copyright, runtime));
+                    }
                 }
             }
-            while ((name = br.readLine()) != null) 
-            {
-                if (name.isEmpty())
-                {
-                    break;
-                }
-                library.addPatron(new Patron(name, br.readLine()));
-            }
-            System.out.println(library);
-            int selection = Integer.parseInt(System.console().readLine("\nWhich book to check out? "));
-            System.out.println(library.patronMenu());
-            int patron = Integer.parseInt(System.console().readLine("\nWho are you? "));
-            library.checkOut(selection, patron);
-            System.out.println(library);
-        } 
-        catch (IllegalArgumentException e) 
-        {
-            System.err.println("Invalid copyright year - " + e);
-        } 
-        catch (ArrayIndexOutOfBoundsException e) 
-        {
-            System.err.println("Missing filename argument for publications / patrons - " + e);
-        } 
-        catch (IOException e) 
-        {
-            System.err.println("Error reading file " + args[0] + " - " + e);
-        } 
-        catch (Exception e) 
-        {
-            System.err.println("Unexpected exception - " + e);
+        } catch (FileNotFoundException e) {
+            System.err.println("Could not load publications file: " + fileName);
+            System.exit(1); // Exit the program with an error code
         }
     }
+
+    // Load patrons from a text file
+    // Load patrons from a text file
+    public static void loadPatronsFromFile(Library library, String fileName) {
+        try (Scanner scanner = new Scanner(new File(fileName))) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                String[] parts = line.split(",");
+
+                if (parts.length >= 2) {
+                    String name = parts[0];
+                    String email = parts[1];
+                    library.addPatron(new Patron(name, email));
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("Could not load patrons file: " + fileName);
+            System.exit(1); // Exit the program with an error code
+        }
+    }
+
 }

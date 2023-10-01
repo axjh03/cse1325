@@ -1,36 +1,37 @@
 package library;
 
 /**
- * A person authorized to check out a library resource.
- *
- * @author             Professor George F. Rice
- * @version            1.0
- * @since              1.0
- * @license.agreement  Gnu General Public License 3.0
+ * Represents a patron of the library.
  */
+
 public class Patron {
     /**
-     * Creates a Patron instance.
-     *
-     * @param name     the name on the patron's ID card
-     * @param email    the email address reported by the patron and verified by the library staff
-     * @since              1.0
+     * The name of the patron.
+     */
+    private String name;
+    /**
+     * The email address of the patron.
+     */
+    private String email;
+
+    /**
+     * Creates a new patron with the given name and email.
+     * 
+     * @param name  The name of the patron
+     * @param email The email address of the patron
      */
     public Patron(String name, String email) {
         this.name = name;
         this.email = email;
     }
-    /**
-     * Formats the fields of the patron in human-readable form.
-     *
-     * @returns     the string representation of the patron
-     * @since       1.0
-     */
 
+    /**
+     * Returns a string representation of the patron.
+     *
+     * @return The patron's name and email address
+     */
     @Override
     public String toString() {
         return name + " (" + email + ")";
     }
-    private String name;
-    private String email;
 }

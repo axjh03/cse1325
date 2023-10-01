@@ -3,68 +3,55 @@ package library;
 import java.time.Duration;
 
 /**
- * A library video that can be checked out by a patron.
- *
- * @author             Professor George F. Rice
- * @version            1.0
- * @since              1.0
- * @license.agreement  Gnu General Public License 3.0
+ * Represents a video publication in the library.
  */
 public class Video extends Publication {
+
+    private Duration runtime;
+
+    // Nested exception class
+
     /**
-     * Thown when a Video runtime is invalid.
-     *
-     * The runtime is specified in minutes.
-     *
-     * @since              1.0
+     * Custom exception class for invalid runtime.
      */
-    public class InvalidRuntime extends ArithmeticException {
+    public static class InvalidRuntimeException extends ArithmeticException {
         /**
-         * Constructs an InvalidRuntime with no detail message.
+         * Constructs an instance of InvalidRuntimeException with a specific error
+         * message.
          *
-         * @since       1.0
+         * @param title   The title of the video.
+         * @param runtime The runtime of the video in minutes.
          */
-        public InvalidRuntime() {super();}
-        /**
-         * Constructs an InvalidRuntime with the specified detail message.
-         *
-         * @since       1.0
-         */
-        public InvalidRuntime(String message) {super(message);}
-        /**
-         * Constructs an InvalidRuntime with a custom message.
-         *
-         * @since       1.0
-         */
-        public InvalidRuntime(String title, int runtime) {
-            super(title + " has invalid runtime " + runtime);
+        public InvalidRuntimeException(String title, int runtime) {
+            super(title + " has an invalid runtime of " + runtime + " minutes.");
         }
     }
+
     /**
-     * Creates a Video instance.
-     *
-     * The runtime is specified in minutes.
-     *
-     * @param title        the name of the library
-     * @param author       the principal creator of this resource
-     * @param copyright    the year in which this publication was released or registered
-     * @param runtime      the number of minutes require to play the video at standard speed
-     * @since              1.0
+     * Creates a new Video publication.
+     * 
+     * @param title     The title of the video
+     * @param runtime   The runtime of the video in minutes
+     * @param author    The author of the video
+     * @param copyright The Copyright year of the video
      */
     public Video(String title, String author, int copyright, int runtime) {
         super(title, author, copyright);
-        if(runtime < 1) throw new InvalidRuntime(title, runtime);
+
+        if (runtime <= 0) {
+            throw new InvalidRuntimeException(title, runtime);
+        }
+
         this.runtime = Duration.ofMinutes(runtime);
     }
+
     /**
-     * Formats the fields of the publication in human-readable form.
+     * Generates a string representation of the video.
      *
-     * @returns     the string representation of the publication
-     * @since       1.0
+     * @return The generated string
      */
     @Override
     public String toString() {
-        return toStringBuilder("Video", ", runtime " + runtime.toMinutes() + " minutes");
+        return super.toStringBuilder("Video", ", runtime " + runtime.toMinutes() + " minutes");
     }
-    Duration runtime;
 }

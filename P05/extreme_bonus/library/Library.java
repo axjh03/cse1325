@@ -1,94 +1,105 @@
 package library;
-
-import java.util.ArrayList;
-
+import java.util.*;
 /**
- * Models a library containing various publications.
- *
- * @author             Professor George F. Rice
- * @version            1.0
- * @since              1.0
- * @license.agreement  Gnu General Public License 3.0
- */
+ * Represents a library that manages publications and patrons.
+ * 
+ * @author Alok Jha
+ * @version 1.0
+ * @since 1.0
+ * @license.agreement Gnu General Public License version 3
+*/
 public class Library {
-    /**
-     * Creates a Library instance.
-     *
-     * @param name         the name of the library
-     * @since              1.0
-     */
-    public Library(String name) {
-        this.name = name;
-        this.publications = new ArrayList<>();
-        this.patrons = new ArrayList<>();
+
+  /**
+   * The name of the library.
+   */
+  private String name;
+
+  /** 
+   * The list of publications in the library.
+   */
+  private ArrayList<Publication> publications = new ArrayList<>();
+
+  /**
+   * The list of patrons registered with the library.  
+   */
+  private ArrayList<Patron> patrons = new ArrayList<>();
+   
+  /**
+   * Creates a new Library with the given name.
+   *  
+   * @param name The name of the library
+   */
+  public Library(String name) {
+    this.name = name;
+  }
+
+  /**
+   * Adds a publication to the library.
+   * 
+   * @param publication The publication to add
+   */
+  public void addPublication(Publication publication) {
+    this.publications.add(publication);
+  }
+
+  /**
+   * Adds a patron to the library. 
+   * 
+   * @param patron The patron to add
+   */
+  public void addPatron(Patron patron) {
+    this.patrons.add(patron);
+  }
+
+  /**
+   * Generates a formatted string of all the patrons.
+   * 
+   * @return A string containing the list of patrons
+   */
+  public String patronMenu() {
+    String result = "Patrons\n\n";
+
+    for (int i = 0; i < patrons.size(); i++) {
+      Patron patron = patrons.get(i);
+      String patronInfo = String.format("%d) %s\n", i, patron.toString());
+      result += patronInfo;
     }
-    /**
-     * Adds a publication to this library instance.
-     *
-     * @param publication  the publication to add to the library
-     * @since              1.0
-     */
-    public void addPublication(Publication publication) {
-        publications.add(publication);
+
+    return result;
+  }
+  
+  /**
+   * Checks out a publication to a patron.
+   *  
+   * @param publicationIndex The index of the publication to check out 
+   * @param patronIndex The index of the patron checking out
+   * @return The index of the checked out publication
+   */
+  public int checkOut(int publicationIndex, int patronIndex) {
+    Publication publication = publications.get(publicationIndex);
+    Patron patron = patrons.get(patronIndex);
+    publication.checkOut(patron);
+
+    return publicationIndex;
+  }
+
+  /**
+   * Generates a formatted string of all publications in the library.
+   * 
+   * @return A string containing the list of publications
+   */
+  @Override
+  public String toString() {
+    String result = String.format("%s\n\n", name);
+
+    for (int i = 0; i < publications.size(); i++) {
+      Publication publication = publications.get(i);
+      String info = String.format("%d) %s\n", i, publication);
+      result += info;
     }
-    /**
-     * Adds a patron to this library instance.
-     *
-     * @param patron  the patron to add to the library
-     * @since              1.0
-     */
-    public void addPatron(Patron patron) {
-        patrons.add(patron);
-    }
-    /**
-     * Lists all patrons in this library instance.
-     *
-     * The index shown in the resulting String may be used 
-     * to select a patron using the checkOut() method.
-     *
-     * @returns     the string representation of all library patrons
-     * @since       1.0
-     */
-    public String patronMenu() {
-       StringBuilder sb = new StringBuilder("Patrons\n\n");
-        for(int i=0; i<patrons.size(); ++i)
-            sb.append("" + i + ") " + patrons.get(i).toString() + "\n");
-        return sb.toString();
-    }
-    /**
-     * Checks out a publication from this library instance.
-     *
-     * The due date will be set to 2 weeks from the current date.
-     *
-     * @param publicationIndex  the index as shown by toString()
-     * @param patronIndex       the index as shown by patronMenu()
-     * @since                   1.0
-     */
-    public void checkOut(int publicationIndex, int patronIndex) {
-        try {
-            publications.get(publicationIndex).checkOut(patrons.get(patronIndex));
-        } catch(Exception e) {
-            System.err.println("\nUnable to check out publication #" + publicationIndex 
-                + ": " + e.getMessage() + "\n");
-        }
-    }
-    /**
-     * Lists all publications in this library instance.
-     *
-     * The index shown in the resulting String may be used 
-     * to check out a publication using the checkOut() method.
-     *
-     * @returns     the string representation of all library publications
-     * @since       1.0
-     */
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name + "\n\n");
-        for(int i=0; i<publications.size(); ++i)
-            sb.append("" + i + ") " + publications.get(i).toString() + "\n");
-        return sb.toString();
-    }
-    private String name;
-    private ArrayList<Publication> publications;
-    private ArrayList<Patron> patrons;
+
+    return result;
+  }
+
 }
