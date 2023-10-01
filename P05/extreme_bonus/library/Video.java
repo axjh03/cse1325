@@ -3,7 +3,7 @@ package library;
 import java.time.Duration;
 
 /**
- * Represents a video publication in the library.
+ * Represents a video publication in the library. 
  */
 public class Video extends Publication {
 
@@ -15,6 +15,23 @@ public class Video extends Publication {
      * Custom exception class for invalid runtime.
      */
     public static class InvalidRuntimeException extends ArithmeticException {
+
+        /**
+         * Constructs an instance of InvalidRuntimeException with no detail message.
+         */ 
+        public InvalidRuntimeException() {
+            super();
+        }
+
+        /**
+         * Constructs an instance of InvalidRuntimeException with the specified detail message.
+         *  
+         * @param message The detail message
+         */
+        public InvalidRuntimeException(String message) {
+            super(message); 
+        }
+
         /**
          * Constructs an instance of InvalidRuntimeException with a specific error
          * message.
@@ -29,7 +46,7 @@ public class Video extends Publication {
 
     /**
      * Creates a new Video publication.
-     * 
+     *  
      * @param title     The title of the video
      * @param runtime   The runtime of the video in minutes
      * @param author    The author of the video
@@ -49,7 +66,7 @@ public class Video extends Publication {
      * Generates a string representation of the video.
      *
      * @return The generated string
-     */
+     */ 
     @Override
     public String toString() {
         return super.toStringBuilder("Video", ", runtime " + runtime.toMinutes() + " minutes");

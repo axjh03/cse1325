@@ -1,6 +1,10 @@
 package mdi;
 
-import library.*;
+import library.Library;
+import library.Patron;
+import library.Publication;
+import library.Video;
+import library.Video.InvalidRuntimeException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -47,7 +51,11 @@ public class LibraryManager {
         }
 
         // Checkout publication
-        library.checkOut(bookChoice, patronChoice);
+            try {
+      library.checkOut(bookChoice, patronChoice);
+    } catch (InvalidRuntimeException e) {
+      System.err.println(e.getMessage()); 
+    }
 
         // Print updated table
         System.out.println(library.toString());
