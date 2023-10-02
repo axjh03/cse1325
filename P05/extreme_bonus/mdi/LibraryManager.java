@@ -17,6 +17,7 @@ import library.Video;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -72,22 +73,27 @@ public class LibraryManager {
         // List available publications
         System.out.println("Available Publications:");
         listPublications();
-
+    
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check out: ");
         int publicationIndex = input.nextInt();
-
+    
         if (publicationIndex >= 0 && publicationIndex < library.getPublications().size()) {
             // List patrons
             System.out.println("List of Patrons:");
             System.out.println(library.patronMenu());
-
+    
             System.out.print("Enter the index of the patron who is checking out: ");
             int patronIndex = input.nextInt();
-
+    
             if (patronIndex >= 0 && patronIndex < library.getPatrons().size()) {
                 int checkedOutIndex = library.checkOut(publicationIndex, patronIndex);
-                System.out.println("Publication with index " + checkedOutIndex + " checked out successfully.");
+                Publication checkedOutPublication = library.getPublications().get(checkedOutIndex);
+                Patron patron = library.getPatrons().get(patronIndex);
+    
+                String loanedToInfo = "Loaned to: " + patron.toString() + " Due: " + checkedOutPublication.toString().split("Due: ")[1];
+                
+                System.out.println(checkedOutPublication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
             } else {
                 System.err.println("Invalid patron index.");
             }
@@ -95,36 +101,43 @@ public class LibraryManager {
             System.err.println("Invalid publication index.");
         }
     }
+    
+
 
     public void checkInPublication() {
         // List checked-out publications
         System.out.println("Checked-out Publications:");
-
+    
         ArrayList<Publication> checkedOutPublications = new ArrayList<>();
-
+    
         for (Publication publication : library.getPublications()) {
             if (publication.toString().contains("Loaned to:")) {
                 checkedOutPublications.add(publication);
             }
         }
-
+    
         for (int i = 0; i < checkedOutPublications.size(); i++) {
             Publication publication = checkedOutPublications.get(i);
             System.out.println(i + ") " + publication);
         }
-
+    
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check in: ");
+        System.out.println("");
         int publicationIndex = input.nextInt();
-
+    
         if (publicationIndex >= 0 && publicationIndex < checkedOutPublications.size()) {
             Publication publication = checkedOutPublications.get(publicationIndex);
+            String loanedToInfo = publication.toString().substring(publication.toString().indexOf("Loaned to:") + 10);
             publication.checkIn();
-            System.out.println("Publication with index " + publicationIndex + " checked in successfully.");
+            String[] parts = publication.toString().split("\"");
+            System.out.println(parts[1] + " is checked in from" + loanedToInfo.split(" Due:")[0] + " successfully.\n\n");
         } else {
             System.err.println("Invalid publication index.");
         }
     }
+    
+    
 
     public void listPatrons() {
         System.out.println("List of Patrons:");
@@ -166,6 +179,7 @@ public class LibraryManager {
                     }
                 }
             }
+            System.out.printf("Successfully loaded [ '%s' ] as Publication File\n", fileName);
         } catch (FileNotFoundException e) {
             System.err.println("Could not load publications file: " + fileName);
             System.exit(1);
@@ -173,6 +187,7 @@ public class LibraryManager {
     }
 
     private void loadPatronsFromFile(String fileName) {
+
         try (Scanner scanner = new Scanner(new File(fileName))) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -184,70 +199,145 @@ public class LibraryManager {
                     library.addPatron(new Patron(name, email));
                 }
             }
+            System.out.printf("Successfully loaded [ '%s' ] as Patrons File\n\n", fileName);
         } catch (FileNotFoundException e) {
             System.err.println("Could not load patrons file: " + fileName);
             System.exit(1);
         }
     }
 
+    // public void cleanScreen(){
+    // System.console("clear");
+    // }
+    private static void printBanner(String title) {
+        int titleLength = title.length();
+        int totalLength = titleLength + 6; // Add padding and borders
+
+        StringBuilder banner = new StringBuilder();
+
+        // Add top border
+        for (int i = 0; i < totalLength; i++) {
+            banner.append("#");
+        }
+        banner.append("\n");
+
+        // Add title with padding
+        banner.append("#  ");
+        banner.append(title);
+        banner.append("  #\n");
+
+        // Add bottom border
+        for (int i = 0; i < totalLength; i++) {
+            banner.append("#");
+        }
+        banner.append("\n");
+
+        System.out.println(banner.toString());
+    }
+
+    public static void clearScreen() {
+        try {
+            // Clear the terminal screen on macOS and Unix-like systems
+            new ProcessBuilder("clear").inheritIO().start().waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        Library library = new Library("The Kathmandu Library Lounge (Bagmati)");
+        String LibraryName = "The Kathmandu Library Lounge (Bagmati)";
+        Library library = new Library(LibraryName);
         LibraryManager manager = new LibraryManager(library);
         Scanner input = new Scanner(System.in);
+        Integer fileLoadStatus = 0;
+        Integer boot = 1;
 
         while (true) {
-            System.out.println("##########################################");
-            System.out.printf("# %s #\n",library.toString());
-            System.out.println("##########################################");
-            // System.out.println(Library);
+            
+            if (boot == 1) {
+                clearScreen();
+                System.out.println("#####################################################");
+                System.out.printf("# Welcome to %s #\n", LibraryName);
+                System.out.println("#####################################################");
+            } else {
+                printBanner("Main Menu");
+                System.out.printf("%s\n", LibraryName);
+            }
+
             System.out.println("\nPublications");
-            System.out.println("1.) List");
-            System.out.println("2.) Add");
-            System.out.println("3.) Check out");
-            System.out.println("4.) Check in");
-            System.out.println("Patrons");
-            System.out.println("5.) List");
-            System.out.println("6.) Add");
-            System.out.println("Files");
-            System.out.println("7.) Load Files");
-            System.out.println("0.) Exit");
-            System.out.print("Select an option: ");
+            System.out.println("\t1.) List");
+            System.out.println("\t2.) Add");
+            System.out.println("\t3.) Check out");
+            System.out.println("\t4.) Check in");
+            System.out.println("\nPatrons");
+            System.out.println("\t5.) List");
+            System.out.println("\t6.) Add");
+            if (fileLoadStatus == 0) {
+                System.out.println("\nFiles");
+                System.out.println("\t7.) Load Files");
+            }
+            System.out.println("\t0.) Exit");
+            System.out.print("\nSelect an option: ");
 
             int choice = input.nextInt();
-            input.nextLine(); // Consume newline
+            input.nextLine(); // get newline
 
             switch (choice) {
                 case 1:
+                    clearScreen();
+                    printBanner("Library Catalog");
                     manager.listPublications();
+                    boot = 0;
                     break;
                 case 2:
+                    clearScreen();
+                    printBanner("Add Publication");
                     manager.addPublication();
+                    boot = 0;
                     break;
                 case 3:
+                    clearScreen();
+                    printBanner("Checking Out");
                     manager.checkOutPublication();
+                    boot = 0;
                     break;
                 case 4:
+                    clearScreen();
+                    printBanner("Checking In");
                     manager.checkInPublication();
+                    boot = 0;
                     break;
                 case 5:
+                    clearScreen();
+                    printBanner("Patrons");
                     manager.listPatrons();
+                    boot = 0;
                     break;
                 case 6:
+                    clearScreen();
+                    printBanner("Add Patron");
                     manager.addPatron();
+                    boot = 0;
                     break;
                 case 7:
-                    System.out.print("Enter Library File: ");
+                    clearScreen();
+                    printBanner("Reading Files");
+                    System.out.println("Note : Please enter filename with '.txt' or any extension");
+                    System.out.print("Enter Publications File: ");
                     String libraryFile = input.nextLine();
                     System.out.print("Enter Patrons File: ");
                     String patronsFile = input.nextLine();
                     manager.loadData(libraryFile, patronsFile);
+                    fileLoadStatus = 1;
+                    boot = 0;
                     break;
                 case 0:
-                    System.out.println("Exiting Library Manager.");
+                    printBanner("Hope to see you again");
                     System.exit(0);
                     break;
                 default:
                     System.err.println("Invalid choice. Please select a valid option.");
+                    boot = 0;
             }
         }
     }

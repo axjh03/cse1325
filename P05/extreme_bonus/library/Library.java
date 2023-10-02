@@ -124,14 +124,14 @@ public class Library {
   @Override
   public String toString() {
     String result = String.format("%s", name);
-
+    String info = "";
     for (int i = 0; i < publications.size(); i++) {
       Publication publication = publications.get(i);
-      String info = String.format("%d) %s\n", i, publication);
-      result += info;
+      info += String.format("%d) %s\n", i, publication);
+      //result += info;
     }
 
-    return result;
+    return info;
   }
 
 }
