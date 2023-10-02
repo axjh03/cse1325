@@ -18,4 +18,4 @@ cd /Users/axjh03/Library/CloudStorage/OneDrive-UTArlington/semester/Fall23/CSE13
 ant
 
 # Run the application
-java mdi.LibraryManager library.txt
+java mdi.LibraryManager

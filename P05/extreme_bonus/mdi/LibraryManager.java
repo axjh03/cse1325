@@ -1,13 +1,3 @@
-// +LibraryManager(library : Library)
-// +listPublications()
-// +addPublication()
-// +addVideo()
-// +checkOutPublication()
-// +checkInPublication()
-// +listPatrons()
-// +addPatron()
-// +loadData()
-// +main(args: String[])
 package mdi;
 
 import library.Library;

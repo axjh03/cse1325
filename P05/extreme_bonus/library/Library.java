@@ -1,5 +1,5 @@
 package library;
-import java.util.*;
+import java.util.ArrayList;
 /**
  * Represents a library that manages publications and patrons.
  * 
@@ -123,12 +123,10 @@ public class Library {
    */
   @Override
   public String toString() {
-    String result = String.format("%s", name);
     String info = "";
     for (int i = 0; i < publications.size(); i++) {
       Publication publication = publications.get(i);
       info += String.format("%d) %s\n", i, publication);
-      //result += info;
     }
 
     return info;
