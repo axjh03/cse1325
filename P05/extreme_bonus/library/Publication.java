@@ -32,6 +32,15 @@ public class Publication {
     }
 
     /**
+     * Checks if this publication is currently checked out.
+     *
+     * @return true if the publication is checked out, false otherwise
+     */
+    public boolean isCheckedOut() {
+        return loanedTo != null;
+    }
+
+    /**
      * Checks in a previously checked out publication.
      */
 

@@ -1,5 +1,7 @@
 package library;
+
 import java.util.ArrayList;
+
 /**
  * Represents a library that manages publications and patrons.
  * 
@@ -71,6 +73,53 @@ public class Library {
   }
 
   /**
+     * Gets the number of publications in the library.
+     *
+     * @return The number of publications in the library
+     */
+    public int numPublications() {
+      return publications.size();
+  }
+
+  /**
+     * Gets the number of patrons registered with the library.
+     *
+     * @return The number of patrons registered with the library
+     */
+    public int numPatrons() {
+      return patrons.size();
+  }
+
+  /**
+   * Gets a patron at the specified index.
+   *
+   * @param index The index of the patron to retrieve
+   * @return The patron at the specified index
+   * @throws IndexOutOfBoundsException if the index is out of bounds
+   */
+  public Patron getPatron(int index) {
+    if (index >= 0 && index < patrons.size()) {
+      return patrons.get(index);
+    } else {
+      throw new IndexOutOfBoundsException("Invalid patron index.");
+    }
+  }
+  
+  /**
+   * Gets a publication by index from the list of publications.
+   * 
+   * @param index The index of the publication to retrieve
+   * @return The publication at the specified index
+   */
+  public Publication getPublication(int index) {
+    if (index >= 0 && index < publications.size()) {
+      return publications.get(index);
+    } else {
+      throw new IndexOutOfBoundsException("Invalid publication index.");
+    }
+  }
+
+  /**
    * Generates a formatted string of all the patrons.
    * 
    * @return A string containing the list of patrons
@@ -131,5 +180,4 @@ public class Library {
 
     return info;
   }
-
 }

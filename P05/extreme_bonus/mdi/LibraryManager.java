@@ -68,26 +68,32 @@ public class LibraryManager {
         System.out.print("Enter the index of the publication to check out: ");
         int publicationIndex = input.nextInt();
     
-        if (publicationIndex >= 0 && publicationIndex < library.getPublications().size()) {
+        try {
             // List patrons
             System.out.println("List of Patrons:");
-            System.out.println(library.patronMenu());
+            // Use numPatrons() to get the number of patrons
+            for (int index = 0; index < library.numPatrons(); ++index) {
+                Patron patron = library.getPatron(index);
+                System.out.println(index + ") " + patron);
+            }
     
             System.out.print("Enter the index of the patron who is checking out: ");
             int patronIndex = input.nextInt();
     
-            if (patronIndex >= 0 && patronIndex < library.getPatrons().size()) {
+            // Use numPatrons() to check if the patronIndex is valid
+            if (patronIndex >= 0 && patronIndex < library.numPatrons()) {
                 int checkedOutIndex = library.checkOut(publicationIndex, patronIndex);
-                Publication checkedOutPublication = library.getPublications().get(checkedOutIndex);
-                Patron patron = library.getPatrons().get(patronIndex);
+                Publication publication = library.getPublications().get(checkedOutIndex);
+                Patron patron = library.getPatron(patronIndex); // Use getPatron(int index)
     
-                String loanedToInfo = "Loaned to: " + patron.toString() + " Due: " + checkedOutPublication.toString().split("Due: ")[1];
-                
-                System.out.println(checkedOutPublication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
+                String loanedToInfo = "Loaned to: " + patron.toString() + " Due: "
+                        + publication.toString().split("Due: ")[1];
+    
+                System.out.println(publication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
             } else {
                 System.err.println("Invalid patron index.");
             }
-        } else {
+        } catch (IndexOutOfBoundsException e) {
             System.err.println("Invalid publication index.");
         }
     }
@@ -97,41 +103,45 @@ public class LibraryManager {
     public void checkInPublication() {
         // List checked-out publications
         System.out.println("Checked-out Publications:");
-    
+
+        // Create a list to store checked out publications
         ArrayList<Publication> checkedOutPublications = new ArrayList<>();
-    
-        for (Publication publication : library.getPublications()) {
-            if (publication.toString().contains("Loaned to:")) {
+
+        for (int index = 0; index < library.numPublications(); ++index) {
+            Publication publication = library.getPublication(index);
+            if (publication.isCheckedOut()) {
                 checkedOutPublications.add(publication);
             }
         }
-    
+
         for (int i = 0; i < checkedOutPublications.size(); i++) {
             Publication publication = checkedOutPublications.get(i);
             System.out.println(i + ") " + publication);
         }
-    
+
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check in: ");
         System.out.println("");
         int publicationIndex = input.nextInt();
-    
+
         if (publicationIndex >= 0 && publicationIndex < checkedOutPublications.size()) {
             Publication publication = checkedOutPublications.get(publicationIndex);
             String loanedToInfo = publication.toString().substring(publication.toString().indexOf("Loaned to:") + 10);
             publication.checkIn();
             String[] parts = publication.toString().split("\"");
-            System.out.println(parts[1] + " is checked in from" + loanedToInfo.split(" Due:")[0] + " successfully.\n\n");
+            System.out
+                    .println(parts[1] + " is checked in from" + loanedToInfo.split(" Due:")[0] + " successfully.\n\n");
         } else {
             System.err.println("Invalid publication index.");
         }
     }
-    
-    
 
     public void listPatrons() {
         System.out.println("List of Patrons:");
-        System.out.println(library.patronMenu());
+        for (int index = 0; index < library.numPatrons(); ++index) {
+            Patron patron = library.getPatron(index);
+            System.out.println(index + ") " + patron);
+        }
     }
 
     public void addPatron() {
@@ -243,7 +253,7 @@ public class LibraryManager {
         Integer boot = 1;
 
         while (true) {
-            
+
             if (boot == 1) {
                 clearScreen();
                 System.out.println("#####################################################");
