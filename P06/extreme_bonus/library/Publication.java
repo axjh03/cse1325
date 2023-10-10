@@ -3,6 +3,7 @@ package library;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.LocalDate;
 
 /**
@@ -111,22 +112,30 @@ public class Publication {
         }
     }
     
-    
-
     public void save(BufferedWriter bw) throws IOException {
         bw.write(type + ',');  // Write the type of publication
         bw.write(title + ','); // Write the title
         bw.write(author + ','); // Write the author
         bw.write(Integer.toString(copyright) + ','); // Write the copyright year
-
+    
         if (loanedTo == null) {
             bw.write("checked in,"); // Publication is checked in
         } else {
-            bw.write("checked out,"); // Publication is checked out
+            bw.write("checked out,");
+            if (this instanceof Video) {
+                // If it's a Video, save the runtime as an integer (in minutes) on the same line
+                Duration runtimeDuration = ((Video) this).getRuntime();
+                long runtimeMinutes = runtimeDuration.toMinutes();
+                bw.write(Long.toString(runtimeMinutes) + ','); // Write the runtime as a number
+            } else {
+                bw.write(','); // Leave a placeholder for runtime
+            }
             loanedTo.save(bw); // Write the loanedTo information
             bw.write(dueDate.toString()); // Write the dueDate
+            //bw.newLine(); // Add a new line to separate publications
         }
     }
+    
 
     public void load(BufferedReader br) throws IOException {
         // Read other fields (type, title, author, copyright)

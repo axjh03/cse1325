@@ -86,12 +86,13 @@ public class Video extends Publication {
         return runtime;
     }
 
-     @Override
+    @Override
     public void save(BufferedWriter bw) throws IOException {
         super.save(bw);
-        bw.write(Long.toString(runtime.toMinutes()));
-        //bw.newLine();
+        long runtimeMinutes = getRuntime().toMinutes();
+        //bw.write(Long.toString(runtimeMinutes));
     }
+    
 
     /**
      * Generates a string representation of the video.
