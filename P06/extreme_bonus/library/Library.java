@@ -62,28 +62,23 @@ public class Library {
 }
 
 
-    public void save(BufferedWriter bw) throws IOException {
-        //bw.write(name);
-        bw.newLine();
-        //bw.write(Integer.toString(publications.size()));
-        bw.newLine();
-        for (Publication publication : publications) {
-            if (publication instanceof Video) {
-                //bw.write("Video");
-                bw.newLine();
-                ((Video) publication).save(bw);
-            } else {
-                //bw.write("Book");
-                bw.newLine();
-                publication.save(bw);
-            }
-        }
-        //bw.write(Integer.toString(patrons.size()));
-        bw.newLine();
-        for (Patron patron : patrons) {
-            patron.save(bw);
-        }
-    }
+public void save(BufferedWriter bw) throws IOException {
+  bw.write(name); // Write the library name
+  bw.newLine();
+  bw.write(Integer.toString(publications.size())); // Write the number of publications
+  bw.newLine();
+  for (Publication publication : publications) {
+      publication.save(bw); // Write each publication
+      bw.newLine();
+  }
+  bw.write(Integer.toString(patrons.size())); // Write the number of patrons
+  bw.newLine();
+  for (Patron patron : patrons) {
+      patron.save(bw); // Write each patron
+      bw.newLine();
+  }
+}
+
 
   /**
    * Adds a publication to the library.

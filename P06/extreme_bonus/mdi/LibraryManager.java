@@ -223,8 +223,9 @@ public class LibraryManager {
     
                     if (status.equalsIgnoreCase("checked out")) {
                         // Set the publication as checked out
-                        String loanedToInfo = parts[5].trim();
-                        Patron loanedToPatron = new Patron(loanedToInfo, loanedToInfo);
+                        String loanedToInfo = parts[6].trim();
+                        String loanedToemail = parts[7].trim();
+                        Patron loanedToPatron = new Patron(loanedToInfo, loanedToemail);
                         publication.checkOut(loanedToPatron);
                         // You may also want to handle loanedTo and dueDate here
                     }
