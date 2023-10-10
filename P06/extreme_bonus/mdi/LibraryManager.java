@@ -235,7 +235,7 @@ public class LibraryManager {
                     String loanedToEmail = parts[7].trim();
                     Patron loanedToPatron = new Patron(loanedToInfo, loanedToEmail);
                     publication.checkOut(loanedToPatron);
-                    // You may also want to handle loanedTo and dueDate here
+                    
                 }
     
                 library.addPublication(publication);
@@ -248,7 +248,7 @@ public class LibraryManager {
     }
 
     
-    
+
     
 
     private void loadPatronsFromFile(String fileName) {

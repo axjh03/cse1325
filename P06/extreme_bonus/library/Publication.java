@@ -144,15 +144,14 @@ public class Publication {
         author = br.readLine();
         copyright = Integer.parseInt(br.readLine());
     
-        // Read checked-in/checked-out status
         String status = br.readLine();
         boolean checkedOut;
         if (status.equals("checked in")) {
             checkedOut = false;
         } else if (status.equals("checked out")) {
             checkedOut = true;
-            // Read loanedTo details (you might need to modify this part)
-            String loanedToName = br.readLine(); // Assuming loanedTo has a setName() method
+            
+            String loanedToName = br.readLine(); 
             loanedTo = new Patron(loanedToName, ""); // Create a Patron object with the name
             // Read and parse dueDate as a string back to a LocalDate
             String dueDateString = br.readLine();
