@@ -63,7 +63,7 @@ public class Publication {
     }
 
     /**
-     * Checks in a previously checked out publication.
+     * Checks in a previously The method checkOut(Patron) in the type Publication is not applicable for the arguments ()checked out publication.
      */
 
     /**
@@ -72,43 +72,86 @@ public class Publication {
      * @param patron The patron checking out the publication
      */
 
-    public void checkOut(Patron patron) {
-        loanedTo = patron;
-        dueDate = LocalDate.now().plusDays(14);
+     public void checkOut(Patron patron) {
+        if (loanedTo == null) {
+            loanedTo = patron;
+            dueDate = LocalDate.now().plusDays(14); // Set due date to 14 days from now
+        }
     }
+    
 
     /**
      * Checks in a previously checked out publication.
      */
 
-    public void checkIn() {
+     public void checkIn() {
         loanedTo = null;
         dueDate = null;
     }
 
     public Publication(BufferedReader br) throws IOException {
+        type = br.readLine(); // Read the type of publication
+        title = br.readLine(); // Read the title
+        author = br.readLine(); // Read the author
+        
+        String copyrightStr = br.readLine();
+        if ("checked in".equals(copyrightStr)) {
+            copyright = 0; // Set a default value for copyright when checked in
+        } else {
+            copyright = Integer.parseInt(copyrightStr); // Parse the copyright year
+        }
+        
+        String loanedToStatus = br.readLine();
+        if ("checked out".equals(loanedToStatus)) {
+            loanedTo = new Patron(br); // Read and construct the loanedTo Patron object
+            dueDate = LocalDate.parse(br.readLine()); // Read and parse the dueDate
+        } else {
+            loanedTo = null; // Publication is checked in
+            dueDate = null; // Due date is not applicable
+        }
+    }
+    
+    
+
+    public void save(BufferedWriter bw) throws IOException {
+        bw.write(type + ',');  // Write the type of publication
+        bw.write(title + ','); // Write the title
+        bw.write(author + ','); // Write the author
+        bw.write(Integer.toString(copyright) + ','); // Write the copyright year
+
+        if (loanedTo == null) {
+            bw.write("checked in,"); // Publication is checked in
+        } else {
+            bw.write("checked out,"); // Publication is checked out
+            loanedTo.save(bw); // Write the loanedTo information
+            bw.write(dueDate.toString()); // Write the dueDate
+        }
+    }
+
+    public void load(BufferedReader br) throws IOException {
+        // Read other fields (type, title, author, copyright)
+        type = br.readLine();
         title = br.readLine();
         author = br.readLine();
         copyright = Integer.parseInt(br.readLine());
-
-        String loanedToStatus = br.readLine();
-        if (loanedToStatus.equals("checked out")) {
-            loanedTo = new Patron(br);
-            dueDate = LocalDate.parse(br.readLine());
-        } else {
-            loanedTo = null;
-            dueDate = null;
+    
+        // Read checked-in/checked-out status
+        String status = br.readLine();
+        boolean checkedOut;
+        if (status.equals("checked in")) {
+            checkedOut = false;
+        } else if (status.equals("checked out")) {
+            checkedOut = true;
+            // Read loanedTo details (you might need to modify this part)
+            String loanedToName = br.readLine(); // Assuming loanedTo has a setName() method
+            loanedTo = new Patron(loanedToName, ""); // Create a Patron object with the name
+            // Read and parse dueDate as a string back to a LocalDate
+            String dueDateString = br.readLine();
+            dueDate = LocalDate.parse(dueDateString);
         }
     }
 
-    public void save(BufferedWriter bw) throws IOException {
-        bw.write(type + "," + title + "," + author + "," + copyright);
-        if (type.equalsIgnoreCase("Video")) {
-            bw.write(",");
-        }
-        //bw.newLine();
-    }
-
+    
     /**
      * Generates a string representation of the publication.
      * 

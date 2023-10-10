@@ -102,33 +102,33 @@ public class LibraryManager {
         // List available publications
         System.out.println("Available Publications:");
         listPublications();
-
+    
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check out: ");
         int publicationIndex = input.nextInt();
-
+    
         try {
             // List patrons
             System.out.println("List of Patrons:");
-            // Use numPatrons() to get the number of patrons
             for (int index = 0; index < library.numPatrons(); ++index) {
                 Patron patron = library.getPatron(index);
                 System.out.println(index + ") " + patron);
             }
-
+    
             System.out.print("Enter the index of the patron who is checking out: ");
             int patronIndex = input.nextInt();
-
+    
             // Use numPatrons() to check if the patronIndex is valid
             if (patronIndex >= 0 && patronIndex < library.numPatrons()) {
-                int checkedOutIndex = library.checkOut(publicationIndex, patronIndex);
-                Publication publication = library.getPublications().get(checkedOutIndex);
                 Patron patron = library.getPatron(patronIndex); // Use getPatron(int index)
-
-                String loanedToInfo = "Loaned to: " + patron.toString() + " Due: "
-                        + publication.toString().split("Due: ")[1];
-
-                System.out.println(publication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
+                Publication publication = library.getPublication(publicationIndex);
+    
+                if (publication != null && !publication.isCheckedOut()) {
+                    publication.checkOut(patron); // Provide the Patron object
+                    System.out.println(publication.getTitle() + " has been checked out to " + patron.getName());
+                } else {
+                    System.err.println("Publication is not available for checkout.");
+                }
             } else {
                 System.err.println("Invalid patron index.");
             }
@@ -136,6 +136,7 @@ public class LibraryManager {
             System.err.println("Invalid publication index.");
         }
     }
+    
 
     public void checkInPublication() {
         // List checked-out publications
@@ -201,19 +202,34 @@ public class LibraryManager {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
-
-                if (parts.length >= 4) {
+    
+                if (parts.length >= 5) {
                     String type = parts[0];
                     String title = parts[1];
                     String author = parts[2];
                     int copyright = Integer.parseInt(parts[3].trim());
-
+                    String status = parts[4].trim();
+    
+                    Publication publication;
                     if (type.equalsIgnoreCase("Book")) {
-                        library.addPublication(new Publication(type,title, author, copyright));
+                        publication = new Publication(type, title, author, copyright);
                     } else if (type.equalsIgnoreCase("Video")) {
-                        int runtime = Integer.parseInt(parts[4].trim());
-                        library.addPublication(new Video(title, author, copyright, runtime));
+                        int runtime = Integer.parseInt(parts[5].trim());
+                        publication = new Video(title, author, copyright, runtime);
+                    } else {
+                        // Handle unsupported types or invalid lines
+                        continue;
                     }
+    
+                    if (status.equalsIgnoreCase("checked out")) {
+                        // Set the publication as checked out
+                        String loanedToInfo = parts[5].trim();
+                        Patron loanedToPatron = new Patron(loanedToInfo, loanedToInfo);
+                        publication.checkOut(loanedToPatron);
+                        // You may also want to handle loanedTo and dueDate here
+                    }
+    
+                    library.addPublication(publication);
                 }
             }
             System.out.printf("Successfully loaded [ '%s' ] as Publication File\n", fileName);
@@ -222,6 +238,7 @@ public class LibraryManager {
             System.exit(1);
         }
     }
+    
 
     private void loadPatronsFromFile(String fileName) {
 

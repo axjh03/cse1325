@@ -85,4 +85,8 @@ public class Patron {
     public void checkInPublication(Publication publication) {
         checkedOutPublications.remove(publication);
     }
+
+    public String getName() {
+        return null;
+    }
 }

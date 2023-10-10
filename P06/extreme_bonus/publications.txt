@@ -1,8 +1,7 @@
-Book,Hands-On Machine Learning with Scikit-Learn,Aurélien Géron,2023
-Book,The Way of the Superior Man,David Deida,2017
-Book,2001: A Space Odyssey,Dick Hill,1968
-Book,The Cyborg Revolution, James Mercer,2003
-Book,$100M Offers, Alex Hormonzi,2020
-Video,Citizen Kane,Orson Welles,1941,119
-Video,Inception,Christopher Nolan,2010,148
-Video,The Matrix,The Wachowskis,1999,136
+Book,The Way of the Superior Man,David Deida,2017,checked in,
+Book,2001: A Space Odyssey,Dick Hill,1968,checked in,
+Book,The Cyborg Revolution, James Mercer,2003,checked in,
+Book,$100M Offers, Alex Hormonzi,2020,checked in,
+Video,Citizen Kane,Orson Welles,1941,checked in,119
+Video,Inception,Christopher Nolan,2010,checked in,148
+Video,The Matrix,The Wachowskis,1999,checked in,136
