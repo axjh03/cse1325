@@ -7,8 +7,12 @@ import library.Patron;
 import library.Publication;
 import library.Video;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -37,13 +41,46 @@ public class LibraryManager {
         int copyright = input.nextInt();
 
         if (type.equalsIgnoreCase("Book")) {
-            library.addPublication(new Publication(title, author, copyright));
+            library.addPublication(new Publication(type,title, author, copyright));
         } else if (type.equalsIgnoreCase("Video")) {
             System.out.print("Enter the runtime (minutes): ");
             int runtime = input.nextInt();
             library.addPublication(new Video(title, author, copyright, runtime));
         } else {
             System.err.println("Invalid publication type. Only 'Book' and 'Video' are supported.");
+        }
+    }
+
+    public void saveLibrary() {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.print("Enter the filename to save publications: ");
+        String publicationsFileName = input.nextLine();
+        
+        System.out.print("Enter the filename to save patrons: ");
+        String patronsFileName = input.nextLine();
+    
+        try (BufferedWriter publicationsBW = new BufferedWriter(new FileWriter(publicationsFileName));
+             BufferedWriter patronsBW = new BufferedWriter(new FileWriter(patronsFileName))) {
+            library.savePublications(publicationsBW);
+            library.savePatrons(patronsBW);
+            System.out.println("Library data saved successfully.");
+        } catch (IOException e) {
+            System.err.println("Error saving library data: " + e.getMessage());
+        }
+    }
+    
+    // Modified openLibrary method to use the Library constructor
+    public void openLibrary() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Enter the filename to open the library data: ");
+        String fileName = input.nextLine();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            library = new Library(br);
+            System.out.println("Library data loaded successfully.");
+        } catch (IOException e) {
+            System.err.println("Error opening library data: " + e.getMessage());
         }
     }
 
@@ -65,11 +102,11 @@ public class LibraryManager {
         // List available publications
         System.out.println("Available Publications:");
         listPublications();
-    
+
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check out: ");
         int publicationIndex = input.nextInt();
-    
+
         try {
             // List patrons
             System.out.println("List of Patrons:");
@@ -78,19 +115,19 @@ public class LibraryManager {
                 Patron patron = library.getPatron(index);
                 System.out.println(index + ") " + patron);
             }
-    
+
             System.out.print("Enter the index of the patron who is checking out: ");
             int patronIndex = input.nextInt();
-    
+
             // Use numPatrons() to check if the patronIndex is valid
             if (patronIndex >= 0 && patronIndex < library.numPatrons()) {
                 int checkedOutIndex = library.checkOut(publicationIndex, patronIndex);
                 Publication publication = library.getPublications().get(checkedOutIndex);
                 Patron patron = library.getPatron(patronIndex); // Use getPatron(int index)
-    
+
                 String loanedToInfo = "Loaned to: " + patron.toString() + " Due: "
                         + publication.toString().split("Due: ")[1];
-    
+
                 System.out.println(publication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
             } else {
                 System.err.println("Invalid patron index.");
@@ -99,8 +136,6 @@ public class LibraryManager {
             System.err.println("Invalid publication index.");
         }
     }
-    
-
 
     public void checkInPublication() {
         // List checked-out publications
@@ -174,7 +209,7 @@ public class LibraryManager {
                     int copyright = Integer.parseInt(parts[3].trim());
 
                     if (type.equalsIgnoreCase("Book")) {
-                        library.addPublication(new Publication(title, author, copyright));
+                        library.addPublication(new Publication(type,title, author, copyright));
                     } else if (type.equalsIgnoreCase("Video")) {
                         int runtime = Integer.parseInt(parts[4].trim());
                         library.addPublication(new Video(title, author, copyright, runtime));
@@ -274,10 +309,9 @@ public class LibraryManager {
             System.out.println("\nPatrons");
             System.out.println("\t5.) List");
             System.out.println("\t6.) Add");
-            if (fileLoadStatus == 0) {
-                System.out.println("\nFiles");
-                System.out.println("\t7.) Load Files");
-            }
+            System.out.println("\nFiles");
+            System.out.println("\t7.) Load Files");
+            System.out.println("\t8.) Save Library");
             System.out.println("\t0.) Exit");
             System.out.print("\nSelect an option: ");
 
@@ -324,13 +358,23 @@ public class LibraryManager {
                 case 7:
                     clearScreen();
                     printBanner("Reading Files");
-                    System.out.println("Note : Please enter filename with '.txt' or any extension");
+                    System.out.println("Note: Please enter filename with '.txt' or any extension");
                     System.out.print("Enter Publications File: ");
                     String libraryFile = input.nextLine();
                     System.out.print("Enter Patrons File: ");
                     String patronsFile = input.nextLine();
                     manager.OpenLibrary(libraryFile, patronsFile);
                     fileLoadStatus = 1;
+                    boot = 0;
+                    break;
+                case 8:
+                    if (fileLoadStatus == 1) {
+                        clearScreen();
+                        printBanner("Saving Library");
+                        manager.saveLibrary();
+                    } else {
+                        System.err.println("Please load library data first (Option 7) before saving.");
+                    }
                     boot = 0;
                     break;
                 case 0:

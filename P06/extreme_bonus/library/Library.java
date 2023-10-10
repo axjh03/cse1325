@@ -3,6 +3,9 @@
 // +save(bw: BufferedWriter) 
 
 package library;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -39,6 +42,48 @@ public class Library {
   public Library(String name) {
     this.name = name;
   }
+
+  // New constructor to read Library data from a BufferedReader
+  public Library(BufferedReader br) throws IOException {
+    name = br.readLine();
+    int numPublications = Integer.parseInt(br.readLine());
+    for (int i = 0; i < numPublications; i++) {
+        String type = br.readLine();
+        if (type.equalsIgnoreCase("Book")) {
+            publications.add(new Publication(br));
+        } else if (type.equalsIgnoreCase("Video")) {
+            publications.add(new Video(br));
+        }
+    }
+    int numPatrons = Integer.parseInt(br.readLine());
+    for (int i = 0; i < numPatrons; i++) {
+        patrons.add(new Patron(br));
+    }
+}
+
+
+    public void save(BufferedWriter bw) throws IOException {
+        //bw.write(name);
+        bw.newLine();
+        //bw.write(Integer.toString(publications.size()));
+        bw.newLine();
+        for (Publication publication : publications) {
+            if (publication instanceof Video) {
+                //bw.write("Video");
+                bw.newLine();
+                ((Video) publication).save(bw);
+            } else {
+                //bw.write("Book");
+                bw.newLine();
+                publication.save(bw);
+            }
+        }
+        //bw.write(Integer.toString(patrons.size()));
+        bw.newLine();
+        for (Patron patron : patrons) {
+            patron.save(bw);
+        }
+    }
 
   /**
    * Adds a publication to the library.
@@ -139,6 +184,19 @@ public class Library {
 
     return result;
   }
+
+  public void savePublications(BufferedWriter bw) throws IOException {
+    for (Publication publication : publications) {
+        publication.save(bw);
+    }
+}
+
+public void savePatrons(BufferedWriter bw) throws IOException {
+    for (Patron patron : patrons) {
+        patron.save(bw);
+    }
+}
+
   
   /**
    * Checks out a publication to a patron.

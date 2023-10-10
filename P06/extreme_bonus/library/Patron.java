@@ -3,6 +3,10 @@
 // +save(bw: BufferedWriter) 
 
 package library;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import java.util.ArrayList;
 
@@ -33,6 +37,18 @@ public class Patron {
         this.name = name;
         this.email = email;
     }
+
+    // New constructor to read Patron data from a BufferedReader
+    public Patron(BufferedReader br) throws IOException {
+        name = br.readLine();
+        email = br.readLine();
+    }
+
+    public void save(BufferedWriter bw) throws IOException {
+        bw.write(name + "," + email);
+        bw.newLine();
+    }
+    
 
     /**
      * Returns a string representation of the patron.
