@@ -1,105 +1,86 @@
-package library;
+// Please add 
+// +Video(br: BufferedReader)
+// +save(bw: BufferedWriter) 
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+package library;
+import java.time.Year;
+
 import java.time.Duration;
 
 /**
- * Represents a video publication.
+ * Represents a video publication in the library. 
  */
 public class Video extends Publication {
 
-  private Duration runtime;
+    private Duration runtime;
 
-  /**
-   * Creates a new video publication with the provided title, author, copyright year, and runtime.
-   *
-   * @param title         The title of the video
-   * @param author        The author of the video
-   * @param copyrightYear The copyright year of the video
-   * @param runtime       The runtime duration of the video
-   */
-  public Video(String title, String author, int copyrightYear, Duration runtime) {
-    super(title, author, copyrightYear);
-    this.runtime = runtime;
-  }
+    // Nested exception class
 
-  /**
-   * Gets the runtime duration of this video.
-   *
-   * @return The runtime duration
-   */
-  public Duration getRuntime() {
-    return runtime;
-  }
+    /**
+     * Custom exception class for invalid runtime.
+     */
+    public static class InvalidRuntimeException extends ArithmeticException {
 
-  /**
-   * Sets the runtime duration of this video.
-   *
-   * @param runtime The runtime duration to set
-   */
-  public void setRuntime(Duration runtime) {
-    this.runtime = runtime;
-  }
+        /**
+         * Constructs an instance of InvalidRuntimeException with no detail message.
+         */ 
+        public InvalidRuntimeException() {
+            super();
+        }
 
-  /**
-   * Checks if this video is currently checked out.
-   *
-   * @return true if checked out, false if checked in
-   */
-  @Override
-  public boolean isCheckedOut() {
-    return super.isCheckedOut();
-  }
+        /**
+         * Constructs an instance of InvalidRuntimeException with the specified detail message.
+         *  
+         * @param message The detail message
+         */
+        public InvalidRuntimeException(String message) {
+            super(message); 
+        }
 
-  /**
-   * Checks out this video to the provided patron.
-   *
-   * @param patron The patron checking out this video
-   */
-  @Override
-  public void checkOut(Patron patron) {
-    super.checkOut(patron);
-  }
+        /**
+         * Constructs an instance of InvalidRuntimeException with a specific error
+         * message.
+         *
+         * @param title   The title of the video.
+         * @param runtime The runtime of the video in minutes.
+         */
+        public InvalidRuntimeException(String title, int runtime) {
+            super(title + " has an invalid runtime of " + runtime + " minutes.");
+        }
+        
+    }
 
-  /**
-   * Checks in this video.
-   */
-  @Override
-  public void checkIn() {
-    super.checkIn();
-  }
+    /**
+     * Creates a new Video publication.
+     *  
+     * @param title     The title of the video
+     * @param runtime   The runtime of the video in minutes
+     * @param author    The author of the video
+     * @param copyright The Copyright year of the video
+     */
+    public Video(String title, String author, int copyright, int runtime) {
+        super(title, author, copyright);
+        int currentYear = Year.now().getValue();
 
-  /**
-   * Gets the string representation of this video.
-   *
-   * @return The string representation
-   */
-  @Override
-  public String toString() {
-    return super.toString() + " Runtime: " + runtime.toMinutes() + " minutes";
-  }
+        if (runtime <= 0) {
+            throw new InvalidRuntimeException(title, runtime);
+        }
 
-  /**
-   * Loads the state of this video from the provided reader.
-   *
-   * @param reader The reader to load data from
-   */
-  public Video(BufferedReader reader) throws IOException {
-    super(reader);
-    long minutes = Long.parseLong(reader.readLine());
-    runtime = Duration.ofMinutes(minutes);
-  }
+        if (copyright > currentYear || copyright<1900 ) {
+            String message = "The year of the Video is "+copyright+" which is more that current year which is "+currentYear+" and hence it's invalid";
+            throw new InvalidRuntimeException(message);
+        }        
 
-  /**
-   * Saves the state of this video to the provided writer.
-   *
-   * @param writer The writer to save data to
-   */
-  @Override
-  public void save(BufferedWriter writer) throws IOException {
-    super.save(writer);
-    writer.write("" + runtime.toMinutes() + "\n");
-  }
+        this.runtime = Duration.ofMinutes(runtime);
+    }
+
+    /**
+     * Generates a string representation of the video.
+     *
+     * @return The generated string
+     */ 
+    @Override
+    public String toString() {
+        return super.toStringBuilder("Video", ", runtime " + runtime.toMinutes() + " minutes");
+    }
 }

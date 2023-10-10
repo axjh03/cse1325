@@ -1,3 +1,5 @@
+// Please add +saveLibrary()
+// Please fix and edit as required openLibrary()
 package mdi;
 
 import library.Library;
@@ -5,10 +7,8 @@ import library.Patron;
 import library.Publication;
 import library.Video;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -65,11 +65,11 @@ public class LibraryManager {
         // List available publications
         System.out.println("Available Publications:");
         listPublications();
-
+    
         Scanner input = new Scanner(System.in);
         System.out.print("Enter the index of the publication to check out: ");
         int publicationIndex = input.nextInt();
-
+    
         try {
             // List patrons
             System.out.println("List of Patrons:");
@@ -78,19 +78,19 @@ public class LibraryManager {
                 Patron patron = library.getPatron(index);
                 System.out.println(index + ") " + patron);
             }
-
+    
             System.out.print("Enter the index of the patron who is checking out: ");
             int patronIndex = input.nextInt();
-
+    
             // Use numPatrons() to check if the patronIndex is valid
             if (patronIndex >= 0 && patronIndex < library.numPatrons()) {
                 int checkedOutIndex = library.checkOut(publicationIndex, patronIndex);
                 Publication publication = library.getPublications().get(checkedOutIndex);
                 Patron patron = library.getPatron(patronIndex); // Use getPatron(int index)
-
+    
                 String loanedToInfo = "Loaned to: " + patron.toString() + " Due: "
                         + publication.toString().split("Due: ")[1];
-
+    
                 System.out.println(publication.toString().split("Loaned to:")[0] + "Loaned to: " + loanedToInfo);
             } else {
                 System.err.println("Invalid patron index.");
@@ -99,6 +99,8 @@ public class LibraryManager {
             System.err.println("Invalid publication index.");
         }
     }
+    
+
 
     public void checkInPublication() {
         // List checked-out publications
@@ -154,7 +156,7 @@ public class LibraryManager {
         library.addPatron(new Patron(name, email));
     }
 
-    public void loadData(String libraryFile, String patronsFile) {
+    public void OpenLibrary(String libraryFile, String patronsFile) {
         loadPublicationsFromFile(libraryFile);
         loadPatronsFromFile(patronsFile);
     }
@@ -244,20 +246,6 @@ public class LibraryManager {
         }
     }
 
-    /**
-     * Saves the library data to the given file.
-     *
-     * @param filename The name of the file to save the library data to
-     * @throws IOException If an I/O error occurs while saving the data
-     */
-    public void saveLibrary(String filename) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            library.save(writer);
-        } catch (IOException e) {
-            System.err.println("Error: Unable to write to the file.");
-        }
-    }
-
     public static void main(String[] args) {
         String LibraryName = "The Kathmandu Library Lounge (Bagmati)";
         Library library = new Library(LibraryName);
@@ -341,7 +329,7 @@ public class LibraryManager {
                     String libraryFile = input.nextLine();
                     System.out.print("Enter Patrons File: ");
                     String patronsFile = input.nextLine();
-                    manager.loadData(libraryFile, patronsFile);
+                    manager.OpenLibrary(libraryFile, patronsFile);
                     fileLoadStatus = 1;
                     boot = 0;
                     break;

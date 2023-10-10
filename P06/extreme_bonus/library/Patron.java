@@ -1,11 +1,9 @@
-// +Library(br: BufferedReader)
-// +save(bw: BufferedWriter)
+// Please add 
+// +Patron(br: BufferedReader)
+// +save(bw: BufferedWriter) 
 
 package library;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -34,40 +32,6 @@ public class Patron {
     public Patron(String name, String email) {
         this.name = name;
         this.email = email;
-    }
-
-    /**
-     * Gets the name of the patron.
-     *
-     * @return The name of the patron.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Gets the email address of the patron.
-     *
-     * @return The email address of the patron.
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    public void save(BufferedWriter writer) throws IOException {
-        writer.write(name + "\n");
-        writer.write(email + "\n");
-    }
-
-    /**
-     * Initializes a new Patron by reading from the given reader.
-     *
-     * @param reader The BufferedReader to read patron information from.
-     * @throws IOException If an I/O error occurs while reading.
-     */
-    public Patron(BufferedReader reader) throws IOException {
-        name = reader.readLine();
-        email = reader.readLine();
     }
 
     /**

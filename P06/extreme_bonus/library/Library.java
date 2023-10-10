@@ -1,198 +1,187 @@
+// Please add 
+// +Library(br: BufferedReader)
+// +save(bw: BufferedWriter) 
+
 package library;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Represents a library that manages publications and patrons.
+ * 
+ * @author Alok Jha
+ * @version 1.0
+ * @since 1.0
+ * @license.agreement Gnu General Public License version 3
  */
 public class Library {
 
+  /**
+   * The name of the library.
+   */
   private String name;
-  private ArrayList<Publication> publications;
-  private ArrayList<Patron> patrons;
+
+  /** 
+   * The list of publications in the library.
+   */
+  private ArrayList<Publication> publications = new ArrayList<>();
 
   /**
-   * Creates a new library with the provided name.
-   *
+   * The list of patrons registered with the library.  
+   */
+  private ArrayList<Patron> patrons = new ArrayList<>();
+   
+  /**
+   * Creates a new Library with the given name.
+   *  
    * @param name The name of the library
    */
   public Library(String name) {
     this.name = name;
-    publications = new ArrayList<>();
-    patrons = new ArrayList<>();
   }
 
   /**
-   * Gets the name of the library.
-   *
-   * @return The name of the library
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Sets the name of the library.
-   *
-   * @param name The name of the library to set
-   */
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   * Adds a publication to the library's collection.
-   *
+   * Adds a publication to the library.
+   * 
    * @param publication The publication to add
    */
   public void addPublication(Publication publication) {
-    publications.add(publication);
+    this.publications.add(publication);
   }
 
   /**
-   * Removes a publication from the library's collection.
-   *
-   * @param publication The publication to remove
-   */
-  public void removePublication(Publication publication) {
-    publications.remove(publication);
-  }
-
-  /**
-   * Adds a patron to the library's list of patrons.
-   *
+   * Adds a patron to the library. 
+   * 
    * @param patron The patron to add
    */
   public void addPatron(Patron patron) {
-    patrons.add(patron);
+    this.patrons.add(patron);
+  }
+  
+  /**
+   * Gets the list of publications in the library.
+   *
+   * @return The list of publications
+   */
+  public ArrayList<Publication> getPublications() {
+    return publications;
   }
 
   /**
-   * Removes a patron from the library's list of patrons.
+   * Gets the list of patrons registered with the library.
    *
-   * @param patron The patron to remove
+   * @return The list of patrons
    */
-  public void removePatron(Patron patron) {
-    patrons.remove(patron);
+  public ArrayList<Patron> getPatrons() {
+    return patrons;
   }
 
   /**
-   * Checks if a publication with the given title is available in the library.
+     * Gets the number of publications in the library.
+     *
+     * @return The number of publications in the library
+     */
+    public int numPublications() {
+      return publications.size();
+  }
+
+  /**
+     * Gets the number of patrons registered with the library.
+     *
+     * @return The number of patrons registered with the library
+     */
+    public int numPatrons() {
+      return patrons.size();
+  }
+
+  /**
+   * Gets a patron at the specified index.
    *
-   * @param title The title of the publication to check
-   * @return true if the publication is available, false otherwise
+   * @param index The index of the patron to retrieve
+   * @return The patron at the specified index
+   * @throws IndexOutOfBoundsException if the index is out of bounds
    */
-  public boolean isPublicationAvailable(String title) {
-    for (Publication publication : publications) {
-      if (publication.getTitle().equalsIgnoreCase(title) && !publication.isCheckedOut()) {
-        return true;
-      }
+  public Patron getPatron(int index) {
+    if (index >= 0 && index < patrons.size()) {
+      return patrons.get(index);
+    } else {
+      throw new IndexOutOfBoundsException("Invalid patron index.");
     }
-    return false;
+  }
+  
+  /**
+   * Gets a publication by index from the list of publications.
+   * 
+   * @param index The index of the publication to retrieve
+   * @return The publication at the specified index
+   */
+  public Publication getPublication(int index) {
+    if (index >= 0 && index < publications.size()) {
+      return publications.get(index);
+    } else {
+      throw new IndexOutOfBoundsException("Invalid publication index.");
+    }
   }
 
+  /**
+   * Generates a formatted string of all the patrons.
+   * 
+   * @return A string containing the list of patrons
+   */
+  public String patronMenu() {
+    String result = "Patrons\n\n";
+
+    for (int i = 0; i < patrons.size(); i++) {
+      Patron patron = patrons.get(i);
+      String patronInfo = String.format("%d) %s\n", i, patron.toString());
+      result += patronInfo;
+    }
+
+    return result;
+  }
+  
   /**
    * Checks out a publication to a patron.
-   *
-   * @param title  The title of the publication to check out
-   * @param patron The patron checking out the publication
-   * @return true if the checkout is successful, false otherwise
+   *  
+   * @param publicationIndex The index of the publication to check out 
+   * @param patronIndex The index of the patron checking out
+   * @return The index of the checked out publication
    */
-  public boolean checkOutPublication(String title, Patron patron) {
-    for (Publication publication : publications) {
-      if (publication.getTitle().equalsIgnoreCase(title) && !publication.isCheckedOut()) {
-        publication.checkOut(patron);
-        return true;
-      }
-    }
-    return false;
+  public int checkOut(int publicationIndex, int patronIndex) {
+    Publication publication = publications.get(publicationIndex);
+    Patron patron = patrons.get(patronIndex);
+    publication.checkOut(patron);
+
+    return publicationIndex;
   }
 
   /**
-   * Checks in a publication that was previously checked out.
-   *
-   * @param title The title of the publication to check in
+   * Checks in a publication.
+   * 
+   * @param publicationIndex The index of the publication to check in
+   * @return The index of the checked in publication
    */
-  public void checkInPublication(String title) {
-    for (Publication publication : publications) {
-      if (publication.getTitle().equalsIgnoreCase(title) && publication.isCheckedOut()) {
-        publication.checkIn();
-        return;
-      }
+  public int checkIn(int publicationIndex) {
+    if (publicationIndex >= 0 && publicationIndex < publications.size()) {
+      Publication publication = publications.get(publicationIndex);
+      publication.checkIn();
     }
+    return publicationIndex;
   }
 
   /**
-   * Generates a string representation of the library.
-   *
-   * @return The string representation
+   * Generates a formatted string of all publications in the library.
+   * 
+   * @return A string containing the list of publications
    */
   @Override
   public String toString() {
-    String str = "Library: " + name + "\n";
-    str += "Publications:\n";
-    for (Publication publication : publications) {
-      str += publication.toString() + "\n";
-    }
-    str += "Patrons:\n";
-    for (Patron patron : patrons) {
-      str += patron.toString() + "\n";
-    }
-    return str;
-  }
-
-  /**
-   * Loads the state of the library from the provided reader.
-   *
-   * @param reader The reader to load data from
-   * @throws IOException If an I/O error occurs
-   */
-  public Library(BufferedReader reader) throws IOException {
-    name = reader.readLine();
-
-    int numPubs = Integer.parseInt(reader.readLine());
-    publications = new ArrayList<>();
-    for (int i = 0; i < numPubs; i++) {
-      String type = reader.readLine();
-      if (type.equals("publication")) {
-        publications.add(new Publication(reader));
-      } else {
-        publications.add(new Video(reader));
-      }
+    String info = "";
+    for (int i = 0; i < publications.size(); i++) {
+      Publication publication = publications.get(i);
+      info += String.format("%d) %s\n", i, publication);
     }
 
-    int numPatrons = Integer.parseInt(reader.readLine());
-    patrons = new ArrayList<>();
-    for (int i = 0; i < numPatrons; i++) {
-      patrons.add(new Patron(reader));
-    }
-  }
-
-  /**
-   * Saves the state of the library to the provided writer.
-   *
-   * @param writer The writer to save data to
-   * @throws IOException If an I/O error occurs
-   */
-  public void save(BufferedWriter writer) throws IOException {
-    writer.write(name + "\n");
-
-    writer.write(publications.size() + "\n");
-    for (Publication pub : publications) {
-      if (pub instanceof Publication) {
-        writer.write("publication\n");
-      } else {
-        writer.write("video\n");
-      }
-      pub.save(writer);
-    }
-
-    writer.write(patrons.size() + "\n");
-    for (Patron patron : patrons) {
-      patron.save(writer);
-    }
+    return info;
   }
 }
