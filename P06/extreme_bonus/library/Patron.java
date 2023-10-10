@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import java.util.ArrayList;
 
 /**
  * Represents a patron of the library.

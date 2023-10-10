@@ -188,6 +188,7 @@ public class Library {
   public void savePublications(BufferedWriter bw) throws IOException {
     for (Publication publication : publications) {
         publication.save(bw);
+        bw.newLine();
     }
 }
 
