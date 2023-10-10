@@ -203,35 +203,42 @@ public class LibraryManager {
                 String line = scanner.nextLine();
                 String[] parts = line.split(",");
     
-                if (parts.length >= 5) {
-                    String type = parts[0];
-                    String title = parts[1];
-                    String author = parts[2];
-                    int copyright = Integer.parseInt(parts[3].trim());
-                    String status = parts[4].trim();
+                if (parts.length < 5) {
+                    // Skip lines with insufficient data
+                    continue;
+                }
     
-                    Publication publication;
-                    if (type.equalsIgnoreCase("Book")) {
-                        publication = new Publication(type, title, author, copyright);
-                    } else if (type.equalsIgnoreCase("Video")) {
+                String type = parts[0].trim();
+                String title = parts[1].trim();
+                String author = parts[2].trim();
+                int copyright = Integer.parseInt(parts[3].trim());
+                String status = parts[4].trim();
+    
+                Publication publication;
+    
+                if (type.equalsIgnoreCase("Book")) {
+                    publication = new Publication(type, title, author, copyright);
+                } else if (type.equalsIgnoreCase("Video")) {
+                    if (parts.length >= 6) {
                         int runtime = Integer.parseInt(parts[5].trim());
                         publication = new Video(title, author, copyright, runtime);
                     } else {
-                        // Handle unsupported types or invalid lines
-                        continue;
+                        publication = new Video(title, author, copyright, 0); // Default runtime to 0
                     }
-    
-                    if (status.equalsIgnoreCase("checked out")) {
-                        // Set the publication as checked out
-                        String loanedToInfo = parts[6].trim();
-                        String loanedToemail = parts[7].trim();
-                        Patron loanedToPatron = new Patron(loanedToInfo, loanedToemail);
-                        publication.checkOut(loanedToPatron);
-                        // You may also want to handle loanedTo and dueDate here
-                    }
-    
-                    library.addPublication(publication);
+                } else {
+                    // Handle unsupported types or invalid lines
+                    continue;
                 }
+    
+                if (status.equalsIgnoreCase("checked out") && parts.length >= 7) {
+                    String loanedToInfo = parts[6].trim();
+                    String loanedToEmail = parts[7].trim();
+                    Patron loanedToPatron = new Patron(loanedToInfo, loanedToEmail);
+                    publication.checkOut(loanedToPatron);
+                    // You may also want to handle loanedTo and dueDate here
+                }
+    
+                library.addPublication(publication);
             }
             System.out.printf("Successfully loaded [ '%s' ] as Publication File\n", fileName);
         } catch (FileNotFoundException e) {
@@ -239,6 +246,9 @@ public class LibraryManager {
             System.exit(1);
         }
     }
+
+    
+    
     
 
     private void loadPatronsFromFile(String fileName) {

@@ -1,9 +1,9 @@
 Book,The Way of the Superior Man,David Deida,2017,checked in,
 Book,2001: A Space Odyssey,Dick Hill,1968,checked in,
-Book,The Cyborg Revolution, James Mercer,2003,checked in,
-Book,$100M Offers, Alex Hormonzi,2020,checked in,
-Video,Citizen Kane,Orson Welles,1941,checked in,
-Video,Inception,Christopher Nolan,2010,checked in,
-Video,The Matrix,The Wachowskis,1999,checked in,
-Video,3,31,2011,checked out,33,Ryan Davis,ryan@hotmail.com
-2023-10-24
+Book,The Cyborg Revolution,James Mercer,2003,checked in,
+Book,$100M Offers,Alex Hormonzi,2020,checked in,
+Video,Citizen Kane,Orson Welles,1941,checked in,40
+Video,Inception,Christopher Nolan,2010,checked out,30,Ryan Davis,ryan@hotmail.com
+2023-10-2430
+Video,The Matrix,The Wachowskis,1999,checked in,30
+Video,3,31,2011,checked in,33
