@@ -1,4 +1,5 @@
 package library;
+import java.time.Year;
 
 import java.time.Duration;
 
@@ -42,6 +43,7 @@ public class Video extends Publication {
         public InvalidRuntimeException(String title, int runtime) {
             super(title + " has an invalid runtime of " + runtime + " minutes.");
         }
+        
     }
 
     /**
@@ -54,10 +56,16 @@ public class Video extends Publication {
      */
     public Video(String title, String author, int copyright, int runtime) {
         super(title, author, copyright);
+        int currentYear = Year.now().getValue();
 
         if (runtime <= 0) {
             throw new InvalidRuntimeException(title, runtime);
         }
+
+        if (copyright > currentYear || copyright<1900 ) {
+            String message = "The year of the Video is "+copyright+" which is more that current year which is "+currentYear+" and hence it's invalid";
+            throw new InvalidRuntimeException(message);
+        }        
 
         this.runtime = Duration.ofMinutes(runtime);
     }
