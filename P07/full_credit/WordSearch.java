@@ -9,9 +9,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * This class performs word search on a collection of puzzles using multi-threading.
+ */
 public class WordSearch {
     private static final String usage = "usage: java WordSearch [-h] [-v] [#threads] [#puzzles] [puzzleFile]...";
 
+    /**
+     * Constructs a WordSearch object and initializes it with command line arguments.
+     *
+     * @param args A list of command line arguments.
+     */
     public WordSearch(List<String> args) {
 
         // Validate the command line arguments
@@ -70,6 +78,9 @@ public class WordSearch {
     // vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
     // Modify THIS method to divide up the puzzles among your threads!
     // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    /**
+     * Solves word search puzzles using multi-threading.
+     */
     public void solve() {
         System.err.println("\n" + NUM_PUZZLES + " puzzles with " + NUM_THREADS + " threads"); // Show the # puzzles and threads
 
@@ -106,6 +117,13 @@ public class WordSearch {
         }
     }
 
+    /**
+     * Solves word search puzzles for a specific range of puzzles.
+     *
+     * @param threadID          The ID of the thread performing the puzzle solving.
+     * @param firstPuzzle       The index of the first puzzle to be solved.
+     * @param lastPuzzlePlusOne The index of the last puzzle (exclusive) to be solved.
+     */
     public void solve(int threadID, int firstPuzzle, int lastPuzzlePlusOne) {
         System.err.println("Thread " + threadID + ": " + firstPuzzle + "-" + (lastPuzzlePlusOne - 1));
         for (int i = firstPuzzle; i < lastPuzzlePlusOne; ++i) {
@@ -126,6 +144,11 @@ public class WordSearch {
         // -------- All Puzzles Solved --------
     }
 
+    /**
+     * The main entry point for the WordSearch application.
+     *
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         WordSearch ws = new WordSearch(new LinkedList<>(Arrays.asList(args)));
         ws.solve();
