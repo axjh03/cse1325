@@ -10,7 +10,7 @@ QUESTION 1: Why is String[] args changed to a LinkedList in WordSearch.main? (Hi
 QUESTION 2: How many puzzles did your machine need to solve with 1 thread to run for between 30 and 45 seconds: 
 
 -- > My machine needed to solve 1500 puzzles with 1 thread to run for between 30 and 45 seconds.
-
+ 
 
 
 
