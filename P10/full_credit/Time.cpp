@@ -1,4 +1,3 @@
-// Time.cpp
 #include "Time.h"
 #include <iomanip>
 #include <cmath> 

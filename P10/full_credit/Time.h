@@ -1,9 +1,9 @@
-// Inside Time.h
 #ifndef TIME_H
 #define TIME_H
 #include <iostream>
 
 class Time {
+
 private:
     int _hour;
     int _minute;
@@ -23,8 +23,8 @@ public:
 
     // Math operators
     Time operator+(const Time& other) const;
-    Time& operator++(); // pre-increment
-    Time operator++(int); // post-increment
+    Time& operator++(); 
+    Time operator++(int); 
 
     // Comparison operators
     bool operator==(const Time& other) const;
@@ -38,12 +38,11 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Time& time);
     friend std::istream& operator>>(std::istream& is, Time& time);
 
-    // Optional method
-    int compare(const Time& other) const; // <<optional>>
+    // Optional method in the UML
+    int compare(const Time& other) const;
 
 private:
-    // Helper method
     void rationalize();
 };
 
-#endif // TIME_H
+#endif 
