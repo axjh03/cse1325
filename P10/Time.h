@@ -7,11 +7,11 @@ class Time {
 public:
   Time(int hour, int minute, int second);
   Time();
-  
+
   Time operator+(const Time& time) const;
-  Time operator+(int seconds) const; 
+  Time operator+(int seconds) const;
   friend Time operator+(int seconds, Time& time);
-  
+
   Time& operator++();
   Time operator++(int);
 
@@ -29,9 +29,9 @@ private:
   int _hour;
   int _minute;
   int _second;
-  
+
   void rationalize();
-  int compare(const Time& time) const; // optional
+  int compare(const Time& time) const;  
 };
 
 #endif
