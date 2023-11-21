@@ -28,9 +28,6 @@ int main(int argc, char* argv[]) {
             std::string word;
 
             while (iss >> word) {
-                // Remove punctuation and convert to lowercase (as described in the assignment)
-                // Add the word to the index
-                // Note: You may need to implement functions for removing punctuation and converting to lowercase
                 index.add_word(word, argv[i], line_number);
             }
 
