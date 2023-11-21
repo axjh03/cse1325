@@ -1,4 +1,3 @@
-// Location.h
 #ifndef LOCATION_H
 #define LOCATION_H
 
@@ -21,4 +20,4 @@ public:
     friend std::ostream& operator<<(std::ostream& ost, const Location& location);
 };
 
-#endif // LOCATION_H
+#endif 

@@ -1,4 +1,3 @@
-// Index.cpp
 #include "Index.h"
 
 void Index::add_word(const Index::Word& word, const std::string& filename, int line) {

@@ -1,4 +1,3 @@
-// Index.h
 #ifndef INDEX_H
 #define INDEX_H
 
@@ -18,4 +17,4 @@ public:
     friend std::ostream& operator<<(std::ostream& ost, const Index& index);
 };
 
-#endif // INDEX_H
+#endif

@@ -1,7 +1,5 @@
-// Location.cpp
 #include "Location.h"
 
-// Definition of the static member variable
 std::string Location::last_filename = "";
 
 Location::Location(const std::string& filename, int line) : _filename(filename), _line(line) {}
@@ -42,7 +40,6 @@ std::ostream& operator<<(std::ostream& ost, const Location& location) {
     return ost;
 }
 
-// Static method to set last_filename to an empty string
 void Location::next_word() {
     last_filename = "";
 }

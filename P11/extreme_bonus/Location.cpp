@@ -1,5 +1,7 @@
 #include "Location.h"
 
+std::string Location::last_filename = "";
+
 Location::Location(const std::string& filename, int line) : _filename(filename), _line(line) {}
 
 bool Location::operator==(const Location& rhs) const {
@@ -30,6 +32,15 @@ bool Location::operator>=(const Location& rhs) const {
 }
 
 std::ostream& operator<<(std::ostream& ost, const Location& location) {
-    ost << location._filename << " line " << location._line;
+    if (location._filename != Location::last_filename) {
+        ost << location._filename << ": line ";
+        Location::last_filename = location._filename;
+    }
+    ost << "" << location._line;
     return ost;
+}
+
+// Static method to set last_filename to an empty string
+void Location::next_word() {
+    last_filename = "";
 }

@@ -1,4 +1,3 @@
-# Makefile
 CC = g++
 CFLAGS = -Wall -std=c++17
 
